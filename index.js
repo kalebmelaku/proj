@@ -1,12 +1,12 @@
 import dotenv from "dotenv";
 import { Markup, Telegraf } from "telegraf";
 import { projects } from "./projects.js";
+
 dotenv.config();
-// const bot = new Telegraf("8435873367:AAFrJ2OB4Au34sexpjXIhng_bAZ8kMSAPAM"); // Replace with your bot token
-const bot = new Telegraf(process.env.BOT_TOKEN); // Replace with your bot token
 
+const bot = new Telegraf(process.env.BOT_TOKEN);
 
-// Step 1. Start Command
+// --- Step 1: Start Command ---
 bot.start((ctx) =>
 {
     const buttons = projects.map((p) => [
@@ -19,12 +19,13 @@ bot.start((ctx) =>
     );
 });
 
-// Step 2. Handle Group Selection
+// --- Step 2: Handle Group Selection ---
 projects.forEach((project) =>
 {
     bot.action(`group_${project.id}`, async (ctx) =>
     {
-        await ctx.answerCbQuery();
+        // safe answerCbQuery
+        try { await ctx.answerCbQuery(); } catch (e) { }
 
         const info = `
 📘 *${project.title}*
@@ -46,20 +47,22 @@ ${project.requirements.map((r) => `- ${r}`).join("\n")}
     });
 });
 
-// Step 3. Back button handler
+// --- Step 3: Back button handler ---
 bot.action("back_to_groups", async (ctx) =>
 {
-    await ctx.answerCbQuery();
+    try { await ctx.answerCbQuery(); } catch (e) { }
+
     const buttons = projects.map((p) => [
         Markup.button.callback(p.groupName, `group_${p.id}`),
     ]);
+
     await ctx.editMessageText(
         "👋 Please select your group below:",
         Markup.inlineKeyboard(buttons)
     );
 });
 
-// Step 4. Launch bot
-bot.launch();
-
-console.log("🚀 Bot is running...");
+// --- Step 4: Launch bot ---
+bot.launch()
+    .then(() => console.log("🚀 Bot is running..."))
+    .catch(err => console.error("Failed to launch bot:", err));
