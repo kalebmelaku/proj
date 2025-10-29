@@ -216,5 +216,27 @@ export const projects = [
             "Interest calculator (JS)",
             "Monthly statement generation"
         ]
+    },
+    {
+        id: 10,
+        groupName: "Group Eleven",
+        students: [
+            "Sumaya Omer",
+            "Hafso Mohamed",
+            "Rama Mahamud",
+            "Safi Mahamud",
+            "Nimco Abdulahi",
+            "Amin Nuur",
+            "Rahma Abdulahi"
+        ],
+        title: "🎓 Student Attendance & Performance Tracker",
+        description:
+            "Teachers can record daily attendance and test scores; students can view their performance summary.",
+        requirements: [
+            "Role-based login: Admin (teacher) and Student",
+            "Attendance dashboard with monthly charts (JS chart library)",
+            "Auto-generated student report cards in PDF",
+            "Restrict students to only see their own record"
+        ]
     }
 ];
